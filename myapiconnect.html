@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>New Create a Job</title>
+</head>
+<body>
+  <iframe id="myIframe" src="https://sukharevichdmitry.github.io/Javascript-developer-intern-first-test-task/"></iframe>
+
+  <script>
+    window.onload = function() {
+      var iframe = document.getElementById('myIframe');
+      iframe.onload = function() {
+        var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+        var inputInfo = iframeDocument.getElementById('inputInfo').value;
+        var pipedriveDeal = {
+          inputInfo: inputInfo
+        };
+        sendRequestToPipedriveAPI(pipedriveDeal);
+      };
+    };
+
+    function sendRequestToPipedriveAPI(deal) {
+      // Использование fetch для отправки POST-запроса:
+      fetch('https://api.pipedrive.com/v1/deals?api_token=3fbb50ee70f8c16d13caffaf764369a65ccae6d3', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(deal)
+      })
+      .then(response => {
+        // Обработка ответа от API Pipedrive
+        if (response.ok) {
+          console.log('Запрос к API Pipedrive выполнен успешно.');
+        } else {
+          console.log('Ошибка при выполнении запроса к API Pipedrive.');
+        }
+      })
+      .catch(error => {
+        console.log('Ошибка при выполнении запроса к API Pipedrive: ' + error);
+      });
+    }
+  </script>
+</body>
+</html>
