@@ -1,0 +1,72 @@
+// Функция для отправки запроса к API Pipedrive
+const apiKey = '3fbb50ee70f8c16d13caffaf764369a65ccae6d3';
+
+function sendRequestToPipedriveAPI(deal) {
+    // Использование fetch для отправки POST-запроса:
+    fetch('https://api.pipedrive.com/v1/deals?api_token=' + apiKey, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(deal)
+    })
+        .then(response => {
+            // Обработка ответа от API Pipedrive
+            if (response.ok) {
+                console.log('Запрос к API Pipedrive выполнен успешно.');
+            } else {
+                console.log('Ошибка при выполнении запроса к API Pipedrive.');
+            }
+        })
+        .catch(error => {
+            console.log('Ошибка при выполнении запроса к API Pipedrive: ' + error);
+        });
+}
+
+
+
+
+
+// Обработчик события получения сообщений
+window.addEventListener('message', function(event) {
+    // Проверка источника сообщения (для безопасности замените на свой источник)
+    if (event.origin !== 'https://sukharevichdmitry.github.io') return;
+
+    var inputInfo = event.data;
+    console.log('Полученные данные:', inputInfo);
+
+    // Создаем объект для отправки в Pipedrive
+    var pipedriveDeal = {
+        title: 'Job from iframe',
+        first_name: inputInfo.firstName,
+        last_name: inputInfo.lastName,
+        phone: inputInfo.phone,
+        email: inputInfo.email,
+        
+        '4c4d96e6eeba926553699dffbb865509da63f59f': inputInfo.address,
+        'bd2880ef1545ad3a87214ba775cbf8cf475a940c': inputInfo.jobType,
+
+
+        '7b7a9026f79c39c94e0231c8b9f22833e30e5e94': inputInfo.scheduleDate,
+        '7379a510b4d98e6a4d25c9b4a9801b1bccb38d01': inputInfo.startTime,
+        'd91cf0b42a8bcbd8ec7400b0e278e787ea19cf5e': inputInfo.endTime,
+        'a287c45e151cefe1f690b800b034921467ba1c4d': inputInfo.area,
+        'aaa68fb0dc680d9dab59cbd3bfe105a25aa3cbdd': inputInfo.area,
+        'eddcc194169f6cf2340bf86c6973a481881218dd': inputInfo.jobDetails,
+    };
+    
+    
+    // Отправляем данные в API Pipedrive
+    sendRequestToPipedriveAPI(pipedriveDeal);
+});
+
+
+
+
+
+
+// Загрузка страницы со встроенным iframe
+window.onload = function () {
+    var iframe = document.getElementById('myIframe');
+    iframe.src = 'https://sukharevichdmitry.github.io/Javascript-developer-intern-first-test-task/';
+};
