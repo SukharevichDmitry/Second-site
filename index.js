@@ -35,7 +35,7 @@ function sendRequestToPipedriveAPI(deal) {
 window.addEventListener('message', function(event) {
     if (event.origin !== 'https://sukharevichdmitry.github.io') return;
 
-    if (localStorage.getItem(LOCAL_STORAGE_KEY) === 'true') {
+    if (LOCAL_STORAGE_KEY == true) {
         console.log('Дело уже создано.');
         return; 
     }
@@ -56,7 +56,7 @@ window.addEventListener('message', function(event) {
         };
         
         sendRequestToPipedriveAPI(pipedriveDeal);
-        localStorage.setItem(LOCAL_STORAGE_KEY, 'true');
+        LOCAL_STORAGE_KE = true;
     }    
 
     
