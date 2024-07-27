@@ -1,5 +1,5 @@
 const apiKey = '3fbb50ee70f8c16d13caffaf764369a65ccae6d3';
-let isDealCreated = false; // Флаг для отслеживания, создано ли уже дело
+const LOCAL_STORAGE_KEY = 'dealCreated';
 
 function sendRequestToPipedriveAPI(deal) {
     fetch('https://api.pipedrive.com/v1/deals?api_token=' + apiKey, {
@@ -12,7 +12,7 @@ function sendRequestToPipedriveAPI(deal) {
     .then(response => {
         if (response.ok) {
             console.log('Запрос к API Pipedrive выполнен успешно.');
-            return response.json(); // Возвращаем ответ в формате JSON
+            return response.json();
         } else {
             console.log('Ошибка при выполнении запроса к API Pipedrive.');
             return response.json().then(errorData => {
@@ -35,7 +35,7 @@ function sendRequestToPipedriveAPI(deal) {
 window.addEventListener('message', function(event) {
     if (event.origin !== 'https://sukharevichdmitry.github.io') return;
 
-    if (isDealCreated) return; // Если дело уже создано, не обрабатываем сообщение
+    if (localStorage.getItem(LOCAL_STORAGE_KEY)) return; 
 
     var inputInfo = event.data;
     console.log('Полученные данные:', inputInfo);
@@ -52,7 +52,7 @@ window.addEventListener('message', function(event) {
         'eddcc194169f6cf2340bf86c6973a481881218dd': inputInfo.jobDetails,
     };
 
-    isDealCreated = true; // Устанавливаем флаг, что дело создано
+    localStorage.setItem(LOCAL_STORAGE_KEY, 'true');
     sendRequestToPipedriveAPI(pipedriveDeal);
 });
 
