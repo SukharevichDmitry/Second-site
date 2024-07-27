@@ -38,8 +38,8 @@ window.addEventListener('message', function(event) {
     // Создаем объект для отправки в Pipedrive
     var pipedriveDeal = {
         title: 'Job from iframe',
-        first_name: inputInfo.firstName,
-        last_name: inputInfo.lastName,
+        // first_name: inputInfo.firstName,
+        // last_name: inputInfo.lastName,
         phone: inputInfo.phone,
         email: inputInfo.email,
         
