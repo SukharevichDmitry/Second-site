@@ -24,7 +24,9 @@ function sendRequestToPipedriveAPI(deal) {
         if (data && data.data && data.data.id) {
             const pipedriveUrl = `https://dmitrysukharevich.pipedrive.com/deal/${data.data.id}`;
             const thirdSiteUrl = `https://sukharevichdmitry.github.io/Third-site?url=${encodeURIComponent(pipedriveUrl)}`;
-            window.open(thirdSiteUrl, '_blank'); 
+            
+            // Открываем thirdSiteUrl в том же окне
+            window.location.href = thirdSiteUrl;
         }
     })
     .catch(error => {
