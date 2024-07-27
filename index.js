@@ -1,6 +1,5 @@
 const apiKey = '3fbb50ee70f8c16d13caffaf764369a65ccae6d3';
-const LOCAL_STORAGE_KEY = 'dealCreated';
-console.log('сайт запущен:');
+
 function sendRequestToPipedriveAPI(deal) {
     fetch('https://api.pipedrive.com/v1/deals?api_token=' + apiKey, {
         method: 'POST',
@@ -10,18 +9,17 @@ function sendRequestToPipedriveAPI(deal) {
         body: JSON.stringify(deal)
     })
     .then(response => {
-        console.log('Ответ от API Pipedrive:', response);
         if (response.ok) {
-            return response.json();
+            console.log('Запрос к API Pipedrive выполнен успешно.');
+            return response.json(); // Возвращаем ответ в формате JSON
         } else {
-            console.error('Ошибка при выполнении запроса к API Pipedrive.');
+            console.log('Ошибка при выполнении запроса к API Pipedrive.');
             return response.json().then(errorData => {
-                console.error('Ошибка данные:', errorData);
+                console.error('Ошибка:', errorData);
             });
         }
     })
     .then(data => {
-        console.log('Данные ответа от API:', data);
         if (data && data.data && data.data.id) {
             const pipedriveUrl = `https://dmitrysukharevich.pipedrive.com/deal/${data.data.id}`;
             const thirdSiteUrl = `https://sukharevichdmitry.github.io/Third-site?url=${encodeURIComponent(pipedriveUrl)}`;
@@ -29,19 +27,12 @@ function sendRequestToPipedriveAPI(deal) {
         }
     })
     .catch(error => {
-        console.error('Ошибка при выполнении запроса к API Pipedrive:', error);
+        console.log('Ошибка при выполнении запроса к API Pipedrive: ' + error);
     });
 }
 
 window.addEventListener('message', function(event) {
-     console.log('работает addEvent:');
-    console.log('Получено сообщение:', event.origin, event.data);
     if (event.origin !== 'https://sukharevichdmitry.github.io') return;
-
-    if (localStorage.getItem(LOCAL_STORAGE_KEY)) {
-        console.log('Дело уже создано.');
-        return; 
-    }
 
     var inputInfo = event.data;
     console.log('Полученные данные:', inputInfo);
@@ -58,7 +49,6 @@ window.addEventListener('message', function(event) {
         'eddcc194169f6cf2340bf86c6973a481881218dd': inputInfo.jobDetails,
     };
 
-    localStorage.setItem(LOCAL_STORAGE_KEY, 'true');
     sendRequestToPipedriveAPI(pipedriveDeal);
 });
 
