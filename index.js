@@ -1,5 +1,5 @@
 const apiKey = '3fbb50ee70f8c16d13caffaf764369a65ccae6d3';
-const LOCAL_STORAGE_KEY = false;
+var LOCAL_STORAGE_KEY = false;
 
 function sendRequestToPipedriveAPI(deal) {
     fetch('https://api.pipedrive.com/v1/deals?api_token=' + apiKey, {
@@ -56,7 +56,7 @@ window.addEventListener('message', function(event) {
         };
         
         sendRequestToPipedriveAPI(pipedriveDeal);
-        LOCAL_STORAGE_KE = true;
+        LOCAL_STORAGE_KEY = true;
     }    
 
     
