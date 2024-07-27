@@ -1,4 +1,5 @@
 const apiKey = '3fbb50ee70f8c16d13caffaf764369a65ccae6d3';
+const LOCAL_STORAGE_KEY = 'dealCreated';
 
 function sendRequestToPipedriveAPI(deal) {
     fetch('https://api.pipedrive.com/v1/deals?api_token=' + apiKey, {
@@ -32,7 +33,14 @@ function sendRequestToPipedriveAPI(deal) {
 }
 
 window.addEventListener('message', function(event) {
+    // Проверяем источник сообщения
     if (event.origin !== 'https://sukharevichdmitry.github.io') return;
+
+    // Проверяем, было ли уже создано дело
+    if (localStorage.getItem(LOCAL_STORAGE_KEY) === 'true') {
+        console.log('Дело уже создано.');
+        return; 
+    }
 
     var inputInfo = event.data;
     console.log('Полученные данные:', inputInfo);
@@ -49,6 +57,9 @@ window.addEventListener('message', function(event) {
         'eddcc194169f6cf2340bf86c6973a481881218dd': inputInfo.jobDetails,
     };
 
+    // Устанавливаем флаг, чтобы предотвратить повторное создание дела
+    localStorage.setItem(LOCAL_STORAGE_KEY, 'true');
+    
     sendRequestToPipedriveAPI(pipedriveDeal);
 });
 
