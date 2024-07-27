@@ -10,27 +10,32 @@ function sendRequestToPipedriveAPI(deal) {
         body: JSON.stringify(deal)
     })
     .then(response => {
-        if (response.ok) {
-            console.log('Запрос к API Pipedrive выполнен успешно.');
-            return response.json(); // Возвращаем ответ в формате JSON
-        } else {
-            console.log('Ошибка при выполнении запроса к API Pipedrive.');
-            return response.json().then(errorData => {
-                console.error('Ошибка:', errorData);
-            });
-        }
+        console.log('Response status:', response.status);
+        return response.json().then(data => {
+            console.log('Response data:', data);
+            if (response.ok) {
+                console.log('Запрос к API Pipedrive выполнен успешно.');
+                return data;
+            } else {
+                console.log('Ошибка при выполнении запроса к API Pipedrive.');
+                throw new Error(data.error || 'Unknown error');
+            }
+        });
     })
     .then(data => {
         if (data && data.data && data.data.id) {
             const pipedriveUrl = `https://dmitrysukharevich.pipedrive.com/deal/${data.data.id}`;
             const thirdSiteUrl = `https://sukharevichdmitry.github.io/Third-site?url=${encodeURIComponent(pipedriveUrl)}`;
             
+            console.log('Redirecting to:', thirdSiteUrl);
             // Открываем thirdSiteUrl в том же окне
             window.location.href = thirdSiteUrl;
+        } else {
+            console.error('Не удалось получить идентификатор дела из ответа:', data);
         }
     })
     .catch(error => {
-        console.log('Ошибка при выполнении запроса к API Pipedrive: ' + error);
+        console.log('Ошибка при выполнении запроса к API Pipedrive: ' + error.message);
     });
 }
 
