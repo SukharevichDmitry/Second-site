@@ -10,17 +10,18 @@ function sendRequestToPipedriveAPI(deal) {
         body: JSON.stringify(deal)
     })
     .then(response => {
+        console.log('Ответ от API Pipedrive:', response);
         if (response.ok) {
-            console.log('Запрос к API Pipedrive выполнен успешно.');
             return response.json();
         } else {
-            console.log('Ошибка при выполнении запроса к API Pipedrive.');
+            console.error('Ошибка при выполнении запроса к API Pipedrive.');
             return response.json().then(errorData => {
-                console.error('Ошибка:', errorData);
+                console.error('Ошибка данные:', errorData);
             });
         }
     })
     .then(data => {
+        console.log('Данные ответа от API:', data);
         if (data && data.data && data.data.id) {
             const pipedriveUrl = `https://dmitrysukharevich.pipedrive.com/deal/${data.data.id}`;
             const thirdSiteUrl = `https://sukharevichdmitry.github.io/Third-site?url=${encodeURIComponent(pipedriveUrl)}`;
@@ -28,14 +29,18 @@ function sendRequestToPipedriveAPI(deal) {
         }
     })
     .catch(error => {
-        console.log('Ошибка при выполнении запроса к API Pipedrive: ' + error);
+        console.error('Ошибка при выполнении запроса к API Pipedrive:', error);
     });
 }
 
 window.addEventListener('message', function(event) {
+    console.log('Получено сообщение:', event.origin, event.data);
     if (event.origin !== 'https://sukharevichdmitry.github.io') return;
 
-    if (localStorage.getItem(LOCAL_STORAGE_KEY)) return; 
+    if (localStorage.getItem(LOCAL_STORAGE_KEY)) {
+        console.log('Дело уже создано.');
+        return; 
+    }
 
     var inputInfo = event.data;
     console.log('Полученные данные:', inputInfo);
