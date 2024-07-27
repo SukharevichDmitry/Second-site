@@ -1,6 +1,6 @@
 const apiKey = '3fbb50ee70f8c16d13caffaf764369a65ccae6d3';
 const LOCAL_STORAGE_KEY = 'dealCreated';
-
+console.log('сайт запущен:');
 function sendRequestToPipedriveAPI(deal) {
     fetch('https://api.pipedrive.com/v1/deals?api_token=' + apiKey, {
         method: 'POST',
@@ -34,6 +34,7 @@ function sendRequestToPipedriveAPI(deal) {
 }
 
 window.addEventListener('message', function(event) {
+     console.log('работает addEvent:');
     console.log('Получено сообщение:', event.origin, event.data);
     if (event.origin !== 'https://sukharevichdmitry.github.io') return;
 
