@@ -40,8 +40,8 @@ window.addEventListener('message', function(event) {
         title: 'Job from iframe',
         // first_name: inputInfo.firstName,
         // last_name: inputInfo.lastName,
-        phone: inputInfo.phone,
-        email: inputInfo.email,
+        // phone: inputInfo.phone,
+        // email: inputInfo.email,
         
         '4c4d96e6eeba926553699dffbb865509da63f59f': inputInfo.address,
         'bd2880ef1545ad3a87214ba775cbf8cf475a940c': inputInfo.jobType,
